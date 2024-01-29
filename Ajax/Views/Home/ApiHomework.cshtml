@@ -1,0 +1,81 @@
+﻿@{
+    ViewData["Title"] = "Homework";
+}
+
+<div id="travel">
+    
+</div>
+
+@section Scripts
+{
+    <script src="~/js/travel.js"></script>
+    <script>
+        const rows = spots.CommonFormat.Section;
+        const theUl = document.querySelector('#travel');
+        const travelSpots = [];
+        rows.forEach((row, index) => {
+            var img = Array.isArray(row.file.img) ? row.file.img[0] : row.file.img;
+            // 如果是每行的第一個元素，添加一個新的行的開始標記
+            if (index % 3 === 0) {
+                travelSpots.push('<div class="row">');
+            }
+            // 將旅遊景點的HTML添加到陣列中
+            travelSpots.push(`
+                        <div class="col" style="width:33.33%">
+                            <div class="card h-100">
+                                        <img src="${img.text}" class="card-img-top" alt="">
+                                <div class="card-body">
+                                    <h5 class="card-title">${row.stitle}</h5>
+                                    <p class="card-text">${row.xbody}</p>
+                                </div>
+                                <div class="card-footer">
+                                </div>
+                            </div>
+                        </div>
+                    `);
+            // 如果是每行的第三個元素，或者是最後一個元素，添加行的結束標記
+            if ((index + 1) % 3 === 0 || index === rows.length - 1) {
+                travelSpots.push('</div>');
+            }
+        });
+        theUl.innerHTML = travelSpots.join("");
+    </script>
+}
+
+@* @section Scripts
+{
+
+    <script src="~/js/travel.js"></script>
+    <script>
+        const rows = spots.CommonFormat.Section;
+        const theUl = document.querySelector('#travel');
+        //const liEmps = emps.map(emp => `<li>${emp.name},${emp.workYears},${emp.salary}</li>`);
+        const travelSpots = rows.map(row => {
+            var img = Array.isArray(row.file.img) ? row.file.img[0] : row.file.img;
+            console.log(img);
+            return `<div class="col" style="width:50%">
+            <div class="card h-100">
+                    <img src="${img.text}" class="card-img-top" alt="" >
+            <div class="card-body">
+            <h5 class="card-title">${row.stitle}</h5>
+            <p class="card-text">${row.xbody}</p>
+            </div>
+            <div class="card-footer">
+            </div>
+            </div>
+            </div>`;
+            });
+        theUl.innerHTML = travelSpots.join("");
+
+        
+        // const spot = spots.CommonFormat.Section
+        // let image1 = spot[0].file.img[0].text
+        // for (let i = 0, max = spot.length; i < max; i++) {
+        //     console.log(spot[i].stitle)
+        //     console.log(spot[i].xbody)
+        //     console.log(spot[i].file.img.text)
+        // }
+        // console.log(spot)
+
+    </script>
+} *@

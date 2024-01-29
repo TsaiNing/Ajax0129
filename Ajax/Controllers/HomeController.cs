@@ -22,6 +22,10 @@ namespace Ajax.Controllers
         {
             return View();
         }
+        public IActionResult ApiHomework()
+        {
+            return View();
+        }
 
         public IActionResult Privacy()
         {
