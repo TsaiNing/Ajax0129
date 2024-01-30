@@ -19,7 +19,7 @@
             if (index % 3 === 0) {
                 return `</div><div class="row"><div class="col" style="width:33.33%">
                         <div class="card h-100">
-                            <img src="${img.text}" class="card-img-top" alt="">
+                            <img src="${img.text}" class="card-img-top" alt="${img["@('@')description"]}">
                             <div class="card-body">
                                 <h5 class="card-title">${row.stitle}</h5>
                                 <p class="card-text">${row.xbody}</p>
@@ -31,7 +31,7 @@
             } else {
                 return `<div class="col" style="width:33.33%">
                         <div class="card h-100">
-                            <img src="${img.text}" class="card-img-top" alt="">
+                            <img src="${img.text}" class="card-img-top" alt="${img["@('@')description"]}">
                             <div class="card-body">
                                 <h5 class="card-title">${row.stitle}</h5>
                                 <p class="card-text">${row.xbody}</p>
