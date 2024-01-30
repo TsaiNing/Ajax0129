@@ -22,7 +22,12 @@ namespace Ajax.Controllers
         {
             return View();
         }
-        public IActionResult ApiHomework()
+        
+        public IActionResult First()
+        {
+            return View();
+        }
+        public IActionResult Register()
         {
             return View();
         }
