@@ -49,12 +49,9 @@
                 const data = await response.text();
                 // console.log(response);
                 // console.log(data);
-                
-                if (data === "帳號已存在") {
-                    document.getElementById('divWarning').innerHTML = "帳號已存在";
-                } else {
-                    document.getElementById('divWarning').innerHTML = "帳號可使用";
-                }
+
+                document.getElementById('divWarning').innerHTML = data;
+
             } catch (error) {
                 console.error(error);
                 document.getElementById('div1').innerHTML = "發生錯誤";
