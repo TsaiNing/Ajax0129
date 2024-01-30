@@ -47,9 +47,6 @@
                 const url = '@Url.Content("~/api/CheckAccount")?name=' + name;
                 const response = await fetch(url);
                 const data = await response.text();
-                // console.log(response);
-                // console.log(data);
-
                 document.getElementById('divWarning').innerHTML = data;
 
             } catch (error) {
