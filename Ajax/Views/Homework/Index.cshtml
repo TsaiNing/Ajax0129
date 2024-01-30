@@ -1,0 +1,26 @@
+﻿﻿@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Welcome</h1>
+    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
+    <input type="button" class="btn btn-primary mb-3" value="作業：檢查帳號" id="Register" />
+    <input type="button" class="btn btn-primary mb-3" value="作業：讀取API" id="ApiHomework" />
+</div>
+
+@section Scripts {
+    <script>
+        const Register = document.querySelector(`#Register`);
+        const ApiHomework = document.querySelector(`#ApiHomework`);
+        Register.addEventListener('click', () => {
+            const url = '@Url.Content("~/homework/register")';
+            window.location.href = url; 
+        })
+        ApiHomework.addEventListener('click', () => {
+            const url2 = '@Url.Content("~/homework/apihomework")';
+            window.location.href = url2;
+        })
+
+    </script>
+}

@@ -30,16 +30,35 @@
     </div>
 </div>
 
+
 @section Scripts
 {
     <script>
-        (async () => {
-            const url = '@Url.Content("~/api/CheckAccount")?name=Tom&age=30&email=Tom@gmail.com';
-            const response = await fetch(url);
-            const data = await response.text();
-            console.log(data);
-        })();
+        document.getElementById('userName').addEventListener('input', async () => {
 
+            const name = document.getElementById('userName').value;
+            // const age = document.getElementById('userAge').value;
+            // const email = document.getElementById('UserEmail').value;
+            if (name === "") {
+                document.getElementById('divWarning').innerHTML = "請輸入帳號";
+                return;
+            }
+            try {
+                const url = '@Url.Content("~/api/CheckAccount")?name=' + name;
+                const response = await fetch(url);
+                const data = await response.text();
+                // console.log(response);
+                // console.log(data);
+                
+                if (data === "帳號已存在") {
+                    document.getElementById('divWarning').innerHTML = "帳號已存在";
+                } else {
+                    document.getElementById('divWarning').innerHTML = "帳號可使用";
+                }
+            } catch (error) {
+                console.error(error);
+                document.getElementById('div1').innerHTML = "發生錯誤";
+            }
+        });
     </script>
-
 }

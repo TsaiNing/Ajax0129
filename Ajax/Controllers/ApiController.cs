@@ -31,13 +31,16 @@ namespace Ajax.Controllers
             return Content($"Hello {name},{age}歲了!","text/plain", Encoding.UTF8);
         }
 
-        public IActionResult CheckAccount(Member member)
+        public IActionResult CheckAccount(string Name)
         {
-            if (string.IsNullOrEmpty(member.Name))
+            if (_context.Members.Any(x => x.Name == Name))
             {
-                member.Name = "guest";
+                return Content("帳號已存在") ;
             }
-            return Content($"Hello {member.Name},{member.Age}歲了,電子郵件是{member.Email}!", "text/plain", Encoding.UTF8);
+            else
+            {
+                return Content("帳號可使用");
+            }
         }
 
         public IActionResult Avatar(int id=1)
