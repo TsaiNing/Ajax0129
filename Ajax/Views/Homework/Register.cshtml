@@ -15,7 +15,7 @@
             </div>
             <div class="mb-3">
                 <label for="UserEmail" class="form-label">電子郵件：</label>
-                <input type="email" class="form-control" id="UserEmail" name="Email">
+                <input type="email" class="form-control" id="userEmail" name="Email">
             </div>
             <div class="mb-3">
                 <label for="userAge" class="form-label">年紀：</label>
@@ -34,6 +34,24 @@
 @section Scripts
 {
     <script>
+        const btnSubmit = document.querySelector('#button1');
+        const name = document.querySelector('#userName');
+        const age = document.querySelector('#userAge');
+        const email = document.querySelector('#userEmail');
+        const divInfo = document.querySelector('#div1');
+        btnSubmit.addEventListener('click', async (event) => {
+            event.preventDefault(); //停止預設行為
+            // console.log(name.value);
+            // console.log(age.value);
+            // console.log(email.value);
+
+            const url = `@Url.Content("~/api/register")?name=${name.value}&age=${age.value}&email=${email.value}`;
+            const response = await fetch(url);
+            const datas = await response.text();
+            //console.log(datas);
+
+            divInfo.innerHTML = datas;
+        })
         document.getElementById('userName').addEventListener('input', async () => {
 
             const name = document.getElementById('userName').value;

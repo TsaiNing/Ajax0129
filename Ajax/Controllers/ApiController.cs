@@ -1,5 +1,6 @@
 ﻿using Ajax.Models;
 using Microsoft.AspNetCore.Mvc;
+using MSIT155Site.Models.DTO;
 using System.Text;
 
 namespace Ajax.Controllers
@@ -22,13 +23,13 @@ namespace Ajax.Controllers
             Thread.Sleep(3000);
             return Content("<h2>哈囉~Index</h2>", "text/html", Encoding.UTF8);
         }
-        public IActionResult Register(string name,int age= 28)
+        public IActionResult Register(UserDTO _user)
         {
-            if (string.IsNullOrEmpty(name)) 
+            if (string.IsNullOrEmpty(_user.Name))
             {
-                name = "guest";
+                _user.Name = "guest";
             }
-            return Content($"Hello {name},{age}歲了!","text/plain", Encoding.UTF8);
+            return Content($"Hello {_user.Name}, {_user.Age}歲了, 電子郵件是 {_user.Email}", "text/plain", Encoding.UTF8);
         }
 
         public IActionResult CheckAccount(string Name)
@@ -56,11 +57,26 @@ namespace Ajax.Controllers
             }
             return NotFound();
         }
+
+        //讀取城市
         public IActionResult Cities()
         {
             var cities = _context.Addresses.Select(a => a.City).Distinct();
             return Json(cities);
         }
 
+        //根據城市名稱讀取鄉鎮區
+        public IActionResult District(string city)
+        {
+            var districts = _context.Addresses.Where(a => a.City == city).Select(a => a.SiteId).Distinct();
+            return Json(districts);
+        }
+
+        //根據鄉鎮區名稱讀取路
+        public IActionResult Roads(string district)
+        {
+            var roads = _context.Addresses.Where(a => a.SiteId == district).Select(a => a.Road).Distinct();
+            return Json(roads);
+        }
     }
 }
