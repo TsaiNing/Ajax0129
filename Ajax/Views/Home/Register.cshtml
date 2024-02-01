@@ -7,7 +7,7 @@
 <div class="row">
     <div class="col-3"></div>
     <div class="col-6">
-        <form id="userForm">
+        <form id="userForm" >
             <div class="mb-3">
                 <label for="userName" class="form-label">姓名：</label>
                 <input type="text" class="form-control" id="userName" name="Name">
@@ -21,6 +21,10 @@
                 <label for="userAge" class="form-label">年紀：</label>
                 <input type="number" class="form-control" id="userAge" name="Age">
             </div>
+            <div class="input-group mb-3">
+                <label class="input-group-text" for="inputGroupFile01">頭像上傳</label>
+                <input type="file" class="form-control" id="inputGroupFile01" name="Avatar">
+            </div>
 
             <button id="button1" type="submit" class="btn btn-primary">送出</button>
         </form>
@@ -33,9 +37,9 @@
 {
     <script>
         const btnSubmit = document.querySelector('#button1');
-        const name = document.querySelector('#userName');
-        const age = document.querySelector('#userAge');
-        const email = document.querySelector('#userEmail');
+        // const name = document.querySelector('#userName');
+        // const age = document.querySelector('#userAge');
+        // const email = document.querySelector('#userEmail');
         const divInfo = document.querySelector('#div1');
         btnSubmit.addEventListener('click', async (event) => {
             event.preventDefault(); //停止預設行為
@@ -43,12 +47,30 @@
             // console.log(age.value);
             // console.log(email.value);
 
-            const url = `@Url.Content("~/api/register")?name=${name.value}&age=${age.value}&email=${email.value}`;
-            const response = await fetch(url);
+            //FormData
+            const formData = new FormData(document.querySelector('#userForm'));
+            formData.append("key", "123");
+            //讀取FormData中的資料
+            for (const pair of formData.entries()) 
+            {
+                // console.log(pair[0]);
+                // console.log(pair[1]);
+            }
+            const url = `@Url.Content("~/api/register")`;
+            const response = await fetch(url, {
+                method:"POST",
+                body:formData
+            });
+
             const datas = await response.text();
+            divInfo.innerHTML = datas;
+
+            // const url = `@Url.Content("~/api/register")?name=${name.value}&age=${age.value}&email=${email.value}`;
+            // const response = await fetch(url);
+            // const datas = await response.text();
             //console.log(datas);
 
-            divInfo.innerHTML = datas;
+            
         })
         // (async () => {
         //     const url = '@Url.Content("~/api/register")?name=Jack&age=30';

@@ -1,4 +1,5 @@
 ﻿using Ajax.Models;
+using Ajax.Models.DTO;
 using Microsoft.AspNetCore.Mvc;
 using MSIT155Site.Models.DTO;
 using System.Text;
@@ -9,9 +10,11 @@ namespace Ajax.Controllers
     {
 
         private readonly MyDBContext _context;
-        public ApiController(MyDBContext context)
+        private readonly IWebHostEnvironment _environment;
+        public ApiController(MyDBContext context,IWebHostEnvironment environment)
         {
             _context = context;
+            _environment = environment;
         }
 
         public IActionResult Index()
@@ -23,14 +26,45 @@ namespace Ajax.Controllers
             Thread.Sleep(3000);
             return Content("<h2>哈囉~Index</h2>", "text/html", Encoding.UTF8);
         }
-        public IActionResult Register(UserDTO _user)
+        //public IActionResult Register(UserDTO _user)
+        [HttpPost]
+        public IActionResult Register(Member _user, IFormFile Avatar)
         {
             if (string.IsNullOrEmpty(_user.Name))
             {
                 _user.Name = "guest";
             }
-            return Content($"Hello {_user.Name}, {_user.Age}歲了, 電子郵件是 {_user.Email}", "text/plain", Encoding.UTF8);
+            //string uploadPath = @"C:\CoreMVC\Ajax0129\Ajax\wwwroot\uploads";
+            string fileName = "empty.jpg";
+            if(Avatar != null) 
+            {
+                fileName = Avatar.FileName;
+            }
+            string uploadPath = Path.Combine(_environment.WebRootPath, "uploads", fileName);
+            using (var fileStream = new FileStream(uploadPath, FileMode.Create))
+            {
+                Avatar?.CopyTo(fileStream);
+            }
+            //return Content($"Hello {_user.Name}, {_user.Age}歲了, 電子郵件是 {_user.Email}", "text/plain", Encoding.UTF8);
+            //return Content($"{_user.Avatar?.FileName} - {_user.Avatar?.ContentType} - {_user.Avatar?.Length}");
+
+            //新增到資料庫
+            _user.FileName = fileName;
+            //轉成二進位
+            byte[]? imgByte = null;
+            using (var memoryStream = new MemoryStream())
+            {
+                Avatar?.CopyTo(memoryStream);
+                imgByte = memoryStream.ToArray();
+            }
+            _user.FileData = imgByte;
+
+            _context.Members.Add(_user);
+            _context.SaveChanges();
+
+            return Content(uploadPath);
         }
+        
 
         public IActionResult CheckAccount(string Name)
         {
@@ -77,6 +111,13 @@ namespace Ajax.Controllers
         {
             var roads = _context.Addresses.Where(a => a.SiteId == district).Select(a => a.Road).Distinct();
             return Json(roads);
+        }
+
+        //景點資料
+        [HttpPost]
+        public IActionResult Spots([FromBody]SearchDTO _search)
+        {
+            return Json(_search);
         }
     }
 }
